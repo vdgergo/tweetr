@@ -48,7 +48,7 @@ header{
 
 /* textareas + btn */
 
-textarea{
+.tweet-input{
     border: none;
     resize: none;
     padding: 10px;
@@ -59,7 +59,7 @@ textarea{
     line-height: 30px;
 }
 
-button{
+.tweet-btn{
     background-color: #1DA1F2;
     border: none;
     color: white;
@@ -124,9 +124,87 @@ button{
     border: 1px solid lightgray;
     border-radius: 50%;
     width: 48px;
+    height: 48px;
+}
+
+
+.popup-close-btn{
+    position: absolute;
+    top: 2%;
+    right: 2%;
+    background-color: transparent;
+    border: 2px solid #555;
+    color: #555;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 14px;
+}
+
+.popup-close-btn:hover{
+    color: white;
+    background-color: #1DA1F2;
+    border: 2px solid #1DA1F2;
+}
+
+.reply-popup{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    background-color: white;
+    position: fixed;
+    left:0;
+    right:0;
+    top:0;
+    bottom:0;
+    margin:auto;
+    width: fit-content;
+    height: 250px;
+    padding: 30px;
+    border-radius: 10px;
+    border: 1px solid black;
+}
+
+.replied-tweet{
+    display: flex;
+}
+
+.reply-inner{
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+    justify-content: flex-start;
+}
+
+.reply-input-area {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+
+.reply-input {
+    border: none;
+    resize: none;
+    padding: 10px;
+    width: 100%;
+    font-size: 20px;
+    line-height: 20px;
+    border: 1px solid grey;
+}
+
+.reply-btn{
+    display: block;
+    background-color: #1DA1F2;
+    border: none;
+    color: white;
+    padding: 10px 19px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 600;
 }
 
 /* utility */
-.hidden{
+.hidden {
     display: none;
 }

@@ -13,18 +13,33 @@
 
 <body> 
 	<header>
-		<h1>Twimba</h1>
+		<h1>TweetR</h1>
 	</header>
 	<main>
 		<div class="tweet-input-area">
 			<img src="images/scrimbalogo.png" class="profile-pic">
-			<textarea placeholder="What's happening?" id="tweet-input"></textarea>
+			<textarea class="tweet-input" placeholder="What's happening?" id="tweet-input"></textarea>
 		</div>
-		<button id="tweet-btn">Tweet</button>
+		<button class="tweet-btn" id="tweet-btn">Tweet</button>
 		<div class="feed" id="feed">
 			<!-- Tweets here!! -->
 		</div>
 	</main>
+	<div id="reply-popup" class="reply-popup hidden">
+			<button class="popup-close-btn" id="popup-close-btn">X</button>
+			<div class="replied-tweet" id="replied-tweet">
+				<img src="${tweet.profilePic}" class="profile-pic">
+				<div class ="reply-inner">
+					<p class="handle">${tweet.handle}</p>
+					<p class="tweet-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut .${tweet.tweetText}</p>
+				</div>
+			</div>
+			<div id="reply-input-area" class="reply-input-area">
+				<img src="images/scrimbalogo.png" class="profile-pic">
+				<textarea class="reply-input" placeholder="What's your reply?" id="reply-input"></textarea>
+				<button class="reply-btn" id="reply-btn">Reply</button>
+			</div>			
+	</div>
 	<script src="index.js" type="module"></script>
 </body>
 

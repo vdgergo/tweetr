@@ -1,9 +1,13 @@
-import { tweetsData } from './data.js'
+
+import { tweetsData2 } from './data.js'
+let tweetsData = tweetsData2
 import { v4 as uuidv4 } from 'https://jspm.dev/uuid';
+
+readFromLocalStorage()
 
 document.addEventListener('click', function(e){
     if(e.target.dataset.like){
-       handleLikeClick(e.target.dataset.like) 
+       handleLikeClick(e.target.dataset.like)
     }
     else if(e.target.dataset.retweet){
         handleRetweetClick(e.target.dataset.retweet)
@@ -14,6 +18,19 @@ document.addEventListener('click', function(e){
     else if(e.target.id === 'tweet-btn'){
         handleTweetBtnClick()
     }
+    else if(e.target.dataset.replyto){
+        handleReplyToClick(e.target.dataset.replyto)
+    }
+    else if(e.target.id === 'popup-close-btn'){
+        document.getElementById(e.target.id).parentElement.classList.add("hidden")
+    }
+    else if(e.target.id === 'reply-btn'){
+        handleReplyBtnClick()
+    }
+    if(e.target.dataset.delete){
+        handleDeleteClick(e.target.dataset.delete)
+     }
+
 })
  
 function handleLikeClick(tweetId){ 
@@ -50,6 +67,23 @@ function handleReplyClick(replyId){
     document.getElementById(`replies-${replyId}`).classList.toggle('hidden')
 }
 
+function handleReplyToClick(replyId){
+    const repliedTweetObj = tweetsData.filter(function(tweet){
+        return tweet.uuid === replyId})[0]
+    
+    document.getElementById("replied-tweet").innerHTML = 
+    `
+    <img src="${repliedTweetObj.profilePic}" class="profile-pic">
+	<div class ="reply-inner">
+	<p class="handle">${repliedTweetObj.handle}</p>
+	<p class="tweet-text">${repliedTweetObj.tweetText}</p>
+    `
+
+    document.getElementById('reply-btn').dataset.replieduuid = replyId
+    document.getElementById('reply-popup').classList.toggle("hidden")  
+    console.log(document.getElementById('reply-btn'))
+
+}
 function handleTweetBtnClick(){
     const tweetInput = document.getElementById('tweet-input')
 
@@ -68,8 +102,36 @@ function handleTweetBtnClick(){
     render()
     tweetInput.value = ''
     }
-
 }
+
+function handleReplyBtnClick(){
+    const replyInputEl = document.getElementById('reply-input')
+    const targetTweetObj = tweetsData.filter(function(tweet){
+        return tweet.uuid === document.getElementById('reply-btn').dataset.replieduuid
+    })[0]
+
+    if(replyInputEl.value){
+        targetTweetObj.replies.unshift({
+            handle: `@Scrimba`,
+            profilePic: `images/scrimbalogo.png`,
+            tweetText: `${replyInputEl.value}`,
+            })  
+        replyInputEl.value = ''
+        document.getElementById('reply-popup').classList.toggle('hidden')
+        render()      
+        }   
+    }
+
+function handleDeleteClick(tweetId){
+    const targetTweetObj = tweetsData.filter(function(tweet){
+        return tweet.uuid === tweetId
+    })[0]
+
+    const index = tweetsData.indexOf(targetTweetObj)
+    tweetsData.splice(index, 1)
+    render()
+}
+
 
 function getFeedHtml(){
     let feedHtml = ``
@@ -120,7 +182,7 @@ function getFeedHtml(){
                     data-reply="${tweet.uuid}"
                     ></i>
                     ${tweet.replies.length}
-                </span>
+                </span>                
                 <span class="tweet-detail">
                     <i class="fa-solid fa-heart ${likeIconClass}"
                     data-like="${tweet.uuid}"
@@ -133,6 +195,16 @@ function getFeedHtml(){
                     ></i>
                     ${tweet.retweets}
                 </span>
+                <span class="tweet-detail">
+                    <i class="fa-reply fa-solid"
+                    data-replyto="${tweet.uuid}"
+                    ></i>
+                </span>
+                    <span class="tweet-detail">
+                    <i class="fa-solid fa-trash"
+                    data-delete="${tweet.uuid}"
+                ></i>
+            </span>
             </div>   
         </div>            
     </div>
@@ -147,7 +219,20 @@ function getFeedHtml(){
 
 function render(){
     document.getElementById('feed').innerHTML = getFeedHtml()
+    writeToLocalStorage()
+}
+
+function writeToLocalStorage(){
+    localStorage.setItem('tweetsData',JSON.stringify(tweetsData))
+}
+
+function readFromLocalStorage(){
+    if (localStorage.tweetsData) {
+        tweetsData = JSON.parse(localStorage.getItem('tweetsData'))
+    }
 }
 
 render()
+
+
 
